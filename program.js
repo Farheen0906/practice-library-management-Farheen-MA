@@ -4,17 +4,29 @@
 (title, id, isAvailable) and methods (e.g., checkOut() and
 returnItem()).
 */
+
+//Parent class LibraryItem
 class LibraryItem {
    constructor(title, id, isAvailable) {
         this.title = title;
         this.id = id;
-        this.isAvailable = isAvailable;
-}
+        this.isAvailable = true;
+    }
 checkOut(){
-    throw new Error("This method must be implemented by subclass");
+    if(this.isAvailable){
+        this.isAvailable = false;
+        console.log(`${this.title} has been checked out`);
+    }else{
+        console.log(`${this.title} is not available`);
+    }
 }
 returnItem(){
-   throw new Error("This method must be implemented by subclass");
+ if(!this.isAvailable){
+    this.isAvailable = true;
+    console.log(`${this.title}  has been returned`);
+ }else{
+    console.log(`${this.title} has not been returned`);
+ }
 }
 
 }
@@ -29,48 +41,39 @@ LibraryItem.
 ■ Magazine: Add properties like issueNumber and publisher.
 */
 
+//Child class Book
 class Book extends LibraryItem{
-    
-    constructor(author,genre){
-        super("Harry Potter","id123","Available");
+    constructor(title,id,author,genre){
+        super(title,id);
         this.author = author;
         this.genre = genre;
     }
-checkOut(){
+displayDetails(){
     console.log(`\x1b[31m The Book with Title: ${this.title}, Author: ${this.author}, Genre : ${this.genre}, Availability : ${this.isAvailable}\x1b[0m`);
-}
-returnItem(){
-    console.log(`The Return for the book by author \x1b[31m ${this.author} \x1b[0m is completed`);
 }
 }
 
+//Child class DVD
 class DVD extends LibraryItem{
-   
-    constructor(director, duration) {
-        super("Avatar","456","Available");
+   constructor(title,id,director, duration) {
+        super(title,id);
         this.director = director;
         this.duration = duration;
     }
-checkOut(){
+displayDetails(){
     console.log(`\x1b[31m DVD with Title: ${this.title} , Director: ${this.director} , Duration : ${this.duration},  Availability : ${this.isAvailable} \x1b[0m`);
 }
-returnItem(){
-    console.log(`The Return for the DVD directed by \x1b[31m ${this.director} \x1b[0m is completed`);
-}
 }
 
-
+//Child class Magazine
 class Magazine extends LibraryItem{
-    constructor(issueNumber, publisher) {
-        super("Time","789","Available");
+    constructor(title,id,issueNumber, publisher) {
+        super(title,id);
         this.issueNumber = issueNumber;
         this.publisher = publisher;
     }
-checkOut(){
+displayDetails(){
     console.log(`\x1b[31m The Magazine with Title: ${this.title}, Publisher: ${this.publisher}, Availability : ${this.isAvailable}\x1b[0m`);
-}
-returnItem(){
-    console.log(`The Return for the Magazine published by \x1b[31m ${this.publisher} \x1b[0m is completed`);
 }
 }
 
@@ -81,9 +84,9 @@ methods.
 */
 
 
-const book = new Book("J.K. Rowling","Fantasy");
-const dvd = new DVD("James Cameron","2h 43m");
-const magazine = new Magazine("IssueNo899","Time Inc");
+const book = new Book("Harry Potter","123","J.K. Rowling","Fantasy");
+const dvd = new DVD("Avatar","456","James Cameron","2h 43m");
+const magazine = new Magazine("Time","789","IssueNo899","Time Inc");
 
 /*
 4. Step 4: Test the Inheritance
@@ -92,17 +95,25 @@ manage the availability of items.
 ○ Test accessing and displaying unique properties of each child
 class.
 */
-
+//displaying child objects
 console.log(book);
 console.log(dvd);
 console.log(magazine);
 
+//displaying unique properties of each child class
+book.displayDetails();
+dvd.displayDetails();
+magazine.displayDetails();
 
+
+//stimulating checkout process by accessing shared methods
 book.checkOut();
-book.returnItem();
-
+//When you try to checkout an unavailable book
+book.checkOut();
+//stimulating checkout process by accessing shared methods
 dvd.checkOut();
-dvd.returnItem();
-
 magazine.checkOut();
+//stimulating return proces by accessing shared methods
+book.returnItem();
+dvd.returnItem();
 magazine.returnItem();
